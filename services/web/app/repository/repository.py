@@ -11,16 +11,16 @@ def get_grocery_lists() -> List[GroceryList]:
 
 
 def get_grocery_list_by_id(list_id: int) -> GroceryList:
-    grocery_list_rows = query_db('select * from grocery_lists where id=?', [list_id])
+    grocery_list_rows = query_db('select * from grocery_lists where id=%s', [list_id])
     if len(grocery_list_rows) != 1:
         raise GroceryListNotFoundException(list_id)
 
-    grocery_items_rows = query_db('select * from grocery_items where list_id=?', [list_id])
+    grocery_items_rows = query_db('select * from grocery_items where list_id=%s', [list_id])
     return _grocery_list_from_row(grocery_list_rows[0], grocery_items_rows)
 
 
 def create_grocery_list(name: str) -> GroceryList:
-    query_db('insert into grocery_lists (name) values (?)', [name])
+    query_db('insert into grocery_lists (name) values (%s)', [name])
     new_id: int = query_db('select last_insert_rowid()')
     return get_grocery_list_by_id(new_id)
 
@@ -28,7 +28,7 @@ def create_grocery_list(name: str) -> GroceryList:
 def delete_grocery_list(list_id: int) -> None:
     grocery_list: GroceryList = get_grocery_list_by_id(list_id)
     if grocery_list:
-        query_db('delete from grocery_lists where id=?', [list_id])
+        query_db('delete from grocery_lists where id=%s', [list_id])
         return
     else:
         raise GroceryListNotFoundException(list_id)
@@ -36,16 +36,16 @@ def delete_grocery_list(list_id: int) -> None:
 
 def add_grocery_item_to_list(list_id: int, new_item: GroceryItem) -> GroceryList:
     query_db(
-        'insert into grocery_items (list_id, name, quantity) values (?, ?, ?)',
+        'insert into grocery_items (list_id, name, quantity) values (%s, %s, %s)',
         [list_id, new_item['name'], new_item['quantity']]
     )
     return get_grocery_list_by_id(list_id)
 
 
 def delete_grocery_item_from_list(list_id: int, item_id: int) -> GroceryList:
-    grocery_items_rows = query_db('select * from grocery_items where list_id=? and id=?', [list_id, item_id])
+    grocery_items_rows = query_db('select * from grocery_items where list_id=%s and id=%s', [list_id, item_id])
     if len(grocery_items_rows) == 1:
-        query_db('delete from grocery_items where id=? and list_id=?', [item_id, list_id])
+        query_db('delete from grocery_items where id=%s and list_id=%s', [item_id, list_id])
     return get_grocery_list_by_id(list_id)
 
 

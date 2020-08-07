@@ -3,7 +3,6 @@ from flask_restful import Api
 from app import repository
 from app.api import GroceryListsApi, GroceryListApi, GroceryListItemsApi, GroceryListItemApi
 from app.config import Config
-from app.db import close_db
 from app.domain import GroceryList, GroceryItem
 
 
@@ -20,9 +19,5 @@ def create_app():
     @app.route('/')
     def hello_world():
         return 'Hello World!'
-
-    @app.teardown_appcontext
-    def shutdown_db_connection(exception=None):
-        close_db()
 
     return app

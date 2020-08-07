@@ -18,16 +18,16 @@ depends_on = None
 def upgrade():
     op.execute(
         "CREATE TABLE IF NOT EXISTS grocery_lists ("
-            "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-            "name TEXT"
+            "id serial NOT NULL PRIMARY KEY,"
+            "name varchar"
         ");"
     )
     op.execute(
         "CREATE TABLE IF NOT EXISTS grocery_items ("
-            "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-            "list_id INTEGER NOT NULL,"
-            "name TEXT,"
-            "quantity INTEGER,"
+            "id serial NOT NULL PRIMARY KEY,"
+            "list_id integer NOT NULL,"
+            "name varchar,"
+            "quantity integer,"
             "FOREIGN KEY(list_id) REFERENCES grocery_lists(id)"
         ");"
     )
