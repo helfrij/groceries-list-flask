@@ -1,12 +1,14 @@
+import os
 import psycopg2
 
 
 def get_db():
     return psycopg2.connect(
-        host='localhost',
-        dbname='groceries_list_flask',
-        user='postgres',
-        password='postgres'
+        host=os.environ.get('POSTGRES_HOST'),
+        port=os.environ.get('POSTGRES_PORT'),
+        dbname=os.environ.get('POSTGRES_DB'),
+        user=os.environ.get('POSTGRES_USER'),
+        password=os.environ.get('POSTGRES_PASSWORD')
     )
 
 

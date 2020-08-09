@@ -1,4 +1,4 @@
 .idea
 venv/*
-services/web/.env
-services/web/groceries_alembic
+.env
+.env.db
