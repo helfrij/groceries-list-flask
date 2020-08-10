@@ -8,6 +8,11 @@ class Config:
     # Statement for enabling the development environment
     DEBUG = True
 
+    # Define the database settings
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
     # Application threads. A common general assumption is
     # using 2 per available processor cores - to handle
     # incoming requests using one and performing background
@@ -24,4 +29,7 @@ class Config:
     # Secret key for signing cookies
     SECRET_KEY = "secret"
 
-    DATABASE_URL = os.getenv('DATABASE_URL', None)
+
+class TestConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
