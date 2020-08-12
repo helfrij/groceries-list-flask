@@ -9,7 +9,7 @@ class Config:
     DEBUG = True
 
     # Define the database settings
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', None)
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -31,5 +31,5 @@ class Config:
 
 
 class TestConfig(Config):
-    DEBUG = True
+    # Define the database settings
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
